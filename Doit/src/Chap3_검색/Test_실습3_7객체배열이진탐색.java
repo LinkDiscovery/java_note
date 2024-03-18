@@ -177,6 +177,7 @@ public class Test_실습3_7객체배열이진탐색 {
 			swap(arr,i,arr.length-i-1);
 		}
 		
+		
 	}
 	private static void showData(String string, Fruit4[] arr) {
 		System.out.println(string);

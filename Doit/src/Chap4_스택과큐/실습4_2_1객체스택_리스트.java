@@ -70,7 +70,10 @@ class objectStack{
 */
 	//--- 실행시 예외: 스택이 가득 참 ---//
 	public class OverflowGenericStackException extends RuntimeException {
-
+		private static final long serialVersionUID = 1L;
+		public OverflowGenericStackException(String message) {
+			super(message);
+		}
 	}
 
  private List<Point2> data;           // 스택용 배열
@@ -81,13 +84,17 @@ class objectStack{
 //--- 생성자(constructor) ---//
 	public objectStack(int capacity) {
 		top = 0;
-
+		data =new ArrayList<>(capacity); 
+		this.capacity = capacity;
 	}
 
 //--- 스택에 x를 푸시 ---//
-	public boolean push(Point2 x) throws OverflowGenericStackException {
+	public Point2 push(Point2 x) throws OverflowGenericStackException {
 		if(isFull()) 
 			throw new OverflowGenericStackException("push : stack overflow");
+		data.add(x);
+		top++;
+		return x;
 		
 
 	}
@@ -96,23 +103,33 @@ class objectStack{
 	public Point2 pop() throws EmptyGenericStackException  {
 		if(isEmpty()) 
 			throw new EmptyGenericStackException("push : stack empty");
+		Point2 x = data.remove(top-1);
+		
+		top--;
+		return x;
+		
 	}
 
 //--- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
 	public Point2 peek() throws EmptyGenericStackException  {
-
+		if(isEmpty())
+			throw new EmptyGenericStackException("Peek : stack empty");
+		Point2 x = data.get(top-1);
+		return x;
 	}
 
 //--- 스택을 비움 ---//
 	public void clear() throws EmptyGenericStackException {
-		/*
-		 * stack을 empty로 만들어야 한다.
-		 * stack이 empty일 때 clear()가 호출된 예외 발생해야 한다 
-		 * pop()으로 구현하지 않고 대신에 while 문으로 remove()를 반복 실행한다
-		 */
+//		/*
+//		 * stack을 empty로 만들어야 한다.
+//		 * stack이 empty일 때 clear()가 호출된 예외 발생해야 한다 
+//		 * pop()으로 구현하지 않고 대신에 while 문으로 remove()를 반복 실행한다
+//		 */
 		if (isEmpty()) // 스택이 빔
+			throw new EmptyGenericStackException("Peek : stack empty");
+		data.clear();
+		}
 
-	}
 //--- 스택에서 x를 찾아 인덱스(없으면 –1)를 반환 ---//
 	public int indexOf(Point2 x) {
 		for (int i = top - 1; i >= 0; i--) // 꼭대기 쪽부터 선형 검색
@@ -168,6 +185,7 @@ public class 실습4_2_1객체스택_리스트 {
 				p = new Point2(rndx,rndy);
 				try {
 					s.push(p);
+					System.out.println("push한 데이터는" + p + "입니다.");
 				} catch(objectStack.OverflowGenericStackException e) {
 					System.out.println(e.getMessage());
 					e.printStackTrace(); //main에서 몇번째 줄에 오류가 나왔는지 알려주는 메서드 

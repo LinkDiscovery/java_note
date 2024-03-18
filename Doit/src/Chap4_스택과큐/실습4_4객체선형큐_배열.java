@@ -4,8 +4,6 @@ package Chap4_스택과큐;
 import java.util.Random;
 import java.util.Scanner;
 
-import Test.Queue4.EmptyQueueException;
-
 /*
 * Queue of ArrayList of Point
 */
@@ -63,18 +61,44 @@ class objectQueue2 {
 	}
 //--- 실행시 예외: 큐가 비어있음 ---// // 교수님이 지웠는데 직접보고 타이핑할 것 . 보고해도 괜찮음 외울필요는 없고 이해하기 
 
+	public class EmptyQueueException extends RuntimeException {
 
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+		public EmptyQueueException() {
+			System.out.println("큐가 비었습니다.");
+		}
+		
+	}
 //--- 실행시 예외: 큐가 가득 찼음 ---//
+	public class OverflowQueueException extends RuntimeException {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
+		public OverflowQueueException() {
+			System.out.println("큐가 꽉 찼습니다.");
+		}
+		
+	}
 
 //--- 생성자(constructor) ---//
-public objectQueue2(int maxlen) {
-	
-}
+
+    
+
 
 //--- 큐에 데이터를 인큐 ---//
 	public int enque(Point3 x) throws OverflowQueueException {
-
+		if (isFull()) 
+			throw new OverflowQueueException();
+		que[rear++] = x;
+		
+		return rear-1;
 	}
 
 //--- 큐에서 데이터를 디큐 ---//
@@ -91,7 +115,7 @@ public objectQueue2(int maxlen) {
 
 //--- 큐에서 x를 검색하여 인덱스(찾지 못하면 –1)를 반환 ---//
 	public int indexOf(Point3 x) {
-		for (int i = 0; i < num; i++) {
+		for (int i = 0; i < rear; i++) {
 			int idx = (i + front) % capacity;
 			if (que[idx].equals(x)) // 검색 성공
 				return idx;
@@ -106,17 +130,22 @@ public objectQueue2(int maxlen) {
 
 //--- 큐에 쌓여 있는 데이터 개수를 반환 ---//
 	public int size() {
-//		return num; 
+
+			return rear-front;
+
+		
+	
 	}
 
 //--- 큐가 비어있는가? ---//
 	public boolean isEmpty() {
+		return rear-front <= capacity;
 //		return num <= 0; num 쓰지말고 할것 isfull, isempty 사용 
 	}
 
 //--- 큐가 가득 찼는가? ---//
 	public boolean isFull() {
-		return num >= capacity;
+		return rear >= capacity;
 	}
 
 //--- 큐 안의 모든 데이터를 프런트 → 리어 순으로 출력 ---//
