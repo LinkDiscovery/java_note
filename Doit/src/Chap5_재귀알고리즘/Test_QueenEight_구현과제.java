@@ -1,8 +1,13 @@
+
 package Chap5_재귀알고리즘;
 
+// backtracking 알고리즘의 전형적인 문제 , 작은 문제 쉬운 문제를 한번 풀어보자
 //해가 256개 확인 필요 23.12.12
 import java.util.ArrayList;
 import java.util.List;
+
+import Chap5_재귀알고리즘.Stack4.EmptyGenericStackException;
+import Chap5_재귀알고리즘.Stack4.OverflowGenericStackException;
 
 //https://www.geeksforgeeks.org/n-queen-problem-backtracking-3/?ref=lbp
 //N Queen problem / backtracking
@@ -89,21 +94,30 @@ class Stack4 {
 	}
 
 	// --- 스택에 x를 푸시 ---//
-	public boolean push(Point x) throws OverflowGenericStackException {
+	public Point push(Point x) throws OverflowGenericStackException {
 		if (isFull())
-			throw new OverflowGenericStackException("자리가 꽉 찼있다");
-		
-		return false;
-		
+			throw new OverflowGenericStackException("스택이 꽉 참 있다");
+		data.add(x);
+		top++;
+		return x;
+
 	}
 
 	// --- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---//
 	public Point pop() throws EmptyGenericStackException {
-
+		if (isEmpty())
+			throw new EmptyGenericStackException("스택이 비었다");
+		Point x = data.remove(top - 1);
+		top--;
+		return x;
 	}
 
 	// --- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
 	public Point peek() throws EmptyGenericStackException {
+		if (isEmpty())
+			throw new EmptyGenericStackException("스택이 비었다");
+		Point x = data.get(top - 1);
+		return x;
 
 	}
 
@@ -153,7 +167,8 @@ class Stack4 {
 }
 
 public class Test_QueenEight_구현과제 {
-	public static void EightQueen(int[][] d) {
+	public static void EightQueen(int[][] d) throws EmptyGenericStackException {
+
 		int count = 0;// 퀸 배치 갯수
 		int numberSolutions = 0;
 		int ix = 0, iy = 0;// 행 ix, 열 iy
@@ -161,47 +176,118 @@ public class Test_QueenEight_구현과제 {
 		Point p = new Point(ix, iy);// 현 위치를 객체로 만들고
 		d[ix][iy] = 1;// 현 위치에 queen을 넣었다는 표시를 하고
 		count++;
-		iy++;
+		ix++;// 다음 행으로 이동
+		iy = 0;
 		st.push(p);// 스택에 현 위치 객체를 push
-		while (true) {
-				if (  > 0) {
-					st.push(n);
-					
+		while (true) {// if 두개
+			int newCol = nextMove(d, ix, iy);
+			if (newCol != -1) {
+				
+				iy=newCol;
+				d[ix][newCol] = 1;
+				Point p2= new Point(ix, newCol);
+				try {
+					st.push(p2);	
+				}catch(Stack4.OverflowGenericStackException e){
+					System.out.println("스택이 가득 참");
 				}
-			//175p 코드를 주석으로 알고리즘 로직을 작성**중요 
-			// 두번째 줄 어디에 col을 넣어야 하는지 체크
-	}
+				
+				count++;
+				if(ix==7) break;
+				
+				ix++;
+				iy = 0;
+				
+				continue;
+			}
+			else if (newCol == -1) {
+				try {
+				p = st.pop();
+				
+				
+			} catch(Stack4.EmptyGenericStackException e){
+				System.out.println("스택이 빔");
+			}
+				ix = p.getX();
+				iy = p.getY();
+				d[ix][iy]=0;
+				count--;
+				iy++;
+				continue;
+			}
+			break;
+
+		}
+			showQueens(d);
+		}
+
+		// 175p 코드를 주석으로 알고리즘 로직을 작성**중요
+		// 두번째 줄 어디에 col을 넣어야 하는지 체크
 
 	public static boolean checkRow(int[][] d, int crow) { // 배열 d에서 행 crow에 퀸을 배치할 수 있는지 조사
-		
+		for (int i = 0; i < d.length; i++) {
+			if (d[crow][i] == 1) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static boolean checkCol(int[][] d, int ccol) {// 배열 d에서 열 ccol에 퀸을 배치할 수 있는지 조사
-		
+		for (int i = 0; i < d.length; i++) {
+			if (d[i][ccol] == 1) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	// 배열 d에서 행 cx, 열 cy에 퀸을 남서, 북동 대각선으로 배치할 수 있는지 조사
 	public static boolean checkDiagSW(int[][] d, int cx, int cy) { // x++, y-- or x--, y++ where 0<= x,y <= 7
-		
+		int i = 0;
+		int j = 0;
+		for (i = cx, j = cy; i >= 0 && j  < d[0].length; i--, j++) {
+
+			if (d[i][j] == 1)
+				return false;
+		}
+		for (i = cx, j = cy; i <d[0].length && j >= 0; i++, j--) {
+			if (d[i][j] == 1)
+				return false;
+		}
+		return true;
+
 	}
 
 	// 배열 d에서 행 cx, 열 cy에 퀸을 남동, 북서 대각선으로 배치할 수 있는지 조사
 	public static boolean checkDiagSE(int[][] d, int cx, int cy) {// x++, y++ or x--, y--
-		
+		int i = 0;
+		int j = 0;
+		for (i = cx, j = cy; i >= 0 && j >= 0; i--, j--) {
+			if (d[i][j] == 1)
+				return false;
+		}
+		for (i = cx, j = cy; i < d.length && j <d[0].length ; i++, j++) {
+			if (d[i][j] == 1)
+				return false;
+		}
+		return true;
+
 	}
 
 	// 배열 d에서 (x,y)에 퀸을 배치할 수 있는지 조사
 	public static boolean checkMove(int[][] d, int x, int y) {// (x,y)로 이동 가능한지를 check // checkMove를 부르면 checkFiagSE를
 																// 부른다.
-		if (checkRow() & checkCol() & checkDiagSW() & checkDiagSE())
+		if (checkRow(d, x) & checkCol(d, y) & checkDiagSW(d, x, y) & checkDiagSE(d, x, y))
 			return true;
+		return false;
 	}
 
 	// 배열 d에서 현재 위치(row,col)에 대하여 다음에 이동할 위치 nextCol을 반환, 이동이 가능하지 않으면 -1를 리턴
 	public static int nextMove(int[][] d, int row, int col) {// 현재 row, col에 대하여 이동할 col을 return
-		for(int i = 0; ) {
-			if(checkMove())
-				return col;
+		for (int i = col; i < d.length; i++) {
+			if (checkMove(d, row, i))
+				return i;
 		}
 		return -1;
 	}
@@ -209,14 +295,16 @@ public class Test_QueenEight_구현과제 {
 	static void showQueens(int[][] data) {// 2차원 배열 출력
 		for (int i = 0; i < data.length; i++) {
 			for (int j = 0; j < data[0].length; j++) {
-				System.out.print(data[i][j] + " ");
-
+				if (data[i][j] == 1)
+					System.out.print(1 + " ");
+				else
+					System.out.print(0 + " ");
 			}
 			System.out.println();
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws EmptyGenericStackException  {
 		int row = 8, col = 8;
 		int[][] data = new int[8][8];
 		for (int i = 0; i < data.length; i++)
@@ -224,6 +312,6 @@ public class Test_QueenEight_구현과제 {
 				data[i][j] = 0;
 
 		EightQueen(data);
-		showQueens(data);
+		
 	}
 }
