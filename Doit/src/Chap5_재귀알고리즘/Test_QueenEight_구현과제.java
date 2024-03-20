@@ -192,10 +192,17 @@ public class Test_QueenEight_구현과제 {
 					System.out.println("스택이 가득 참");
 				}
 				
+				
 				count++;
-				if(ix==7) break;
+				
 				
 				ix++;
+				if(ix==8) {
+					numberSolutions++;
+					System.out.println("넘버 솔루션 전체 :" + numberSolutions);
+					showQueens(d);
+					break;
+				}
 				iy = 0;
 				
 				continue;
@@ -218,7 +225,7 @@ public class Test_QueenEight_구현과제 {
 			break;
 
 		}
-			showQueens(d);
+			
 		}
 
 		// 175p 코드를 주석으로 알고리즘 로직을 작성**중요
