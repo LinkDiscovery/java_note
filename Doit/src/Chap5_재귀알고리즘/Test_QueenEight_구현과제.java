@@ -167,7 +167,7 @@ class Stack4 {
 }
 
 public class Test_QueenEight_구현과제 {
-	public static void EightQueen(int[][] d) throws EmptyGenericStackException {
+	public static void EightQueen(int[][] d)  {
 
 		int count = 0;// 퀸 배치 갯수
 		int numberSolutions = 0;
@@ -179,57 +179,66 @@ public class Test_QueenEight_구현과제 {
 		ix++;// 다음 행으로 이동
 		iy = 0;
 		st.push(p);// 스택에 현 위치 객체를 push
-		while (true) {// if 두개
+		while (true) {// if 두개, 모든 해를 다 찾을때까지 , 모든해를 다 찾는다는 것은 무슨 의미인가?
 			int newCol = nextMove(d, ix, iy);
 			if (newCol != -1) {
-				
-				iy=newCol;
-				d[ix][newCol] = 1;
-				Point p2= new Point(ix, newCol);
+
+				iy = newCol;
+				d[ix][iy] = 1;
+				p = new Point(ix, iy);
 				try {
-					st.push(p2);	
-				}catch(Stack4.OverflowGenericStackException e){
+					st.push(p);
+				} catch (Stack4.OverflowGenericStackException e) {
 					System.out.println("스택이 가득 참");
 				}
-				
-				
 				count++;
-				
-				
 				ix++;
-				if(ix==8) {
+				iy = 0;
+
+				if (ix == 8) {//////////////
 					numberSolutions++;
 					System.out.println("넘버 솔루션 전체 :" + numberSolutions);
 					showQueens(d);
+			
+						try {
+							p = st.pop();
+						} catch (EmptyGenericStackException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						ix = p.getX();
+						iy = p.getY();
+						d[ix][iy] = 0;
+						count--;
+						iy++;
+					
+					
+				} /////////////
+			
+				continue;
+				
+			} else if (newCol == -1) {
+				try {
+					p = st.pop();
+
+				} catch (Stack4.EmptyGenericStackException e) {
+					System.out.println("스택이 빔");
 					break;
 				}
-				iy = 0;
-				
-				continue;
-			}
-			else if (newCol == -1) {
-				try {
-				p = st.pop();
-				
-				
-			} catch(Stack4.EmptyGenericStackException e){
-				System.out.println("스택이 빔");
-			}
 				ix = p.getX();
 				iy = p.getY();
-				d[ix][iy]=0;
+				d[ix][iy] = 0;
 				count--;
 				iy++;
 				continue;
 			}
-			break;
-
-		}
 			
 		}
 
-		// 175p 코드를 주석으로 알고리즘 로직을 작성**중요
-		// 두번째 줄 어디에 col을 넣어야 하는지 체크
+	}
+
+	// 175p 코드를 주석으로 알고리즘 로직을 작성**중요
+	// 두번째 줄 어디에 col을 넣어야 하는지 체크
 
 	public static boolean checkRow(int[][] d, int crow) { // 배열 d에서 행 crow에 퀸을 배치할 수 있는지 조사
 		for (int i = 0; i < d.length; i++) {
@@ -253,12 +262,12 @@ public class Test_QueenEight_구현과제 {
 	public static boolean checkDiagSW(int[][] d, int cx, int cy) { // x++, y-- or x--, y++ where 0<= x,y <= 7
 		int i = 0;
 		int j = 0;
-		for (i = cx, j = cy; i >= 0 && j  < d[0].length; i--, j++) {
+		for (i = cx, j = cy; i >= 0 && j < d[0].length; i--, j++) {
 
 			if (d[i][j] == 1)
 				return false;
 		}
-		for (i = cx, j = cy; i <d[0].length && j >= 0; i++, j--) {
+		for (i = cx, j = cy; i < d[0].length && j >= 0; i++, j--) {
 			if (d[i][j] == 1)
 				return false;
 		}
@@ -274,7 +283,7 @@ public class Test_QueenEight_구현과제 {
 			if (d[i][j] == 1)
 				return false;
 		}
-		for (i = cx, j = cy; i < d.length && j <d[0].length ; i++, j++) {
+		for (i = cx, j = cy; i < d.length && j < d[0].length; i++, j++) {
 			if (d[i][j] == 1)
 				return false;
 		}
@@ -311,7 +320,7 @@ public class Test_QueenEight_구현과제 {
 		}
 	}
 
-	public static void main(String[] args) throws EmptyGenericStackException  {
+	public static void main(String[] args)  {
 		int row = 8, col = 8;
 		int[][] data = new int[8][8];
 		for (int i = 0; i < data.length; i++)
@@ -319,6 +328,6 @@ public class Test_QueenEight_구현과제 {
 				data[i][j] = 0;
 
 		EightQueen(data);
-		
+
 	}
 }

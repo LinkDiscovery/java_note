@@ -24,25 +24,34 @@ class Offsets3 {
 		this.a = a; this.b = b;
 	}
 }
-	class StackList {
+
+
 	private List<Items3> data; // 스택용 배열
 	private int capacity; // 스택의 크기
 	private int top; // 스택 포인터
 
 	// --- 실행시 예외 : 스택이 비어있음 ---//
 	public class EmptyIntStackException extends RuntimeException {
-		public EmptyIntStackException() {
-		}
+		private static final long serialVersionUID = 1L;
+
+		public EmptyIntStackException(String message) {
+			super(message);
 	}
 
 	// --- 실행시 예외 : 스택이 가득 참 ---//
 	public class OverflowIntStackException extends RuntimeException {
-		public OverflowIntStackException() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public OverflowIntStackException(String message) {
+			super(message);
 		}
 	}
 
 	// --- 생성자(constructor) ---//
-	public StackList(int maxlen) {
+	public void StackList(int maxlen) {
 		top = 0;
 		capacity = maxlen;
 		try {
@@ -55,7 +64,7 @@ class Offsets3 {
 	// --- 스택에 x를 푸시 ---//
 	public void push(Items3 p) throws OverflowIntStackException {
 		if (top >= capacity) // 스택이 가득 참
-			throw new OverflowIntStackException();
+			throw new OverflowIntStackException("스택 넘침");
 		data.add(p);top++;
 		return;
 	}
@@ -63,14 +72,14 @@ class Offsets3 {
 	// --- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---//
 	public Items3 pop() throws EmptyIntStackException {
 		if (top <= 0) // 스택이 빔
-			throw new EmptyIntStackException();
+			throw new EmptyIntStackException("스택 빔");
 		return data.remove(--top);
 	}
 
 	// --- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
 	public Items3 peek() throws EmptyIntStackException {
 		if (top <= 0) // 스택이 빔
-			throw new EmptyIntStackException();
+			throw new EmptyIntStackException("스택 빔");
 		return data.get(top - 1);
 	}
 
@@ -121,7 +130,7 @@ class Offsets3 {
 
 	public class Test_MazingProblem_미로찾기 {
 
-		static Offsets[] moves = new Offsets[8];//static을 선언하는 이유를 알아야 한다
+		static Offsets3[] moves = new Offsets3[8];//static을 선언하는 이유를 알아야 한다
 
 		public static void path(int[][] maze, int[][] mark, int ix, int iy) {
 
@@ -184,7 +193,7 @@ class Offsets3 {
 					{ 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0 },
 					{ 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0 }};
 			for (int ia = 0; ia < 8; ia++)
-				moves[ia] = new Offsets(0, 0);//배열에 offsets 객체를 치환해야 한다.
+				moves[ia] = new Offsets3(0, 0);//배열에 offsets 객체를 치환해야 한다.
 			moves[0].a = -1;	moves[0].b = 0;
 			moves[1].a = -1;	moves[1].b = 1;
 			moves[2].a = 0;		moves[2].b = 1;
