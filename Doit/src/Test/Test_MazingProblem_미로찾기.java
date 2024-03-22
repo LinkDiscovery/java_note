@@ -1,5 +1,6 @@
-//백트래킹문제풀이 
-package Chap5_재귀알고리즘;
+package Test;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,28 +18,27 @@ class Items3 {
 		return "x = " + x + ", y = " + y + ", dir = " + dir;
 	}
 }
-
 class Offsets3 {
 	int a;
 	int b;
 	public Offsets3(int a, int b) {
-		this.a = a; 
-		this.b = b;
+		this.a = a; this.b = b;
 	}
 }
-
-class StackList{
+	class StackList {
 	private List<Items3> data; // 스택용 배열
 	private int capacity; // 스택의 크기
 	private int top; // 스택 포인터
 
 	// --- 실행시 예외 : 스택이 비어있음 ---//
 	public class EmptyIntStackException extends RuntimeException {
+		/**
+		 * 
+		 */
 		private static final long serialVersionUID = 1L;
 
-		public EmptyIntStackException(String message) {
-			super(message);
-	}
+		public EmptyIntStackException() {
+		}
 	}
 
 	// --- 실행시 예외 : 스택이 가득 참 ---//
@@ -48,26 +48,12 @@ class StackList{
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public OverflowIntStackException(String message) {
-			super(message);
-		}
-	}
-
-
-	
-
-	public StackList(int i) {
-		top = 0;
-		capacity = i;
-		try {
-			data = new ArrayList<>(0); // 스택 본체용 배열을 생성
-		} catch (OutOfMemoryError e) { // 생성할 수 없음
-			capacity = 0;
+		public OverflowIntStackException() {
 		}
 	}
 
 	// --- 생성자(constructor) ---//
-	public void StackList(int maxlen) {
+	public StackList(int maxlen) {
 		top = 0;
 		capacity = maxlen;
 		try {
@@ -80,7 +66,7 @@ class StackList{
 	// --- 스택에 x를 푸시 ---//
 	public void push(Items3 p) throws OverflowIntStackException {
 		if (top >= capacity) // 스택이 가득 참
-			throw new OverflowIntStackException("스택 넘침");
+			throw new OverflowIntStackException();
 		data.add(p);top++;
 		return;
 	}
@@ -88,14 +74,14 @@ class StackList{
 	// --- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---//
 	public Items3 pop() throws EmptyIntStackException {
 		if (top <= 0) // 스택이 빔
-			throw new EmptyIntStackException("스택 빔");
+			throw new EmptyIntStackException();
 		return data.remove(--top);
 	}
 
 	// --- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
 	public Items3 peek() throws EmptyIntStackException {
 		if (top <= 0) // 스택이 빔
-			throw new EmptyIntStackException("스택 빔");
+			throw new EmptyIntStackException();
 		return data.get(top - 1);
 	}
 
@@ -153,20 +139,25 @@ class StackList{
 			mark[1][1] = 1;
 			StackList st = new StackList(50);
 			Items3 temp = new Items3(0, 0, 0);//N :: 0
-			temp.x = 1;
-			temp.y = 1;
-			temp.dir = 2;//E:: 2
+			temp.x = 1; // 행
+			temp.y = 1; // 렬
+			temp.dir = 2;//E:: 2 //
 			mark[temp.x][temp.y] = 2;//미로 찾기 궤적은 2로 표시
 			st.push(temp);
 
-			while (!st.isEmpty()) // stack not empty
+			while (!st.isEmpty()) // stack not empty// stack is not empty
 			{
 				Items3 tmp = st.pop(); // unstack
 				int i = tmp.x;
 				int j = tmp.y;
 				int d = tmp.dir;
 				mark[i][j] = 1;//backtracking 궤적은 1로 표시
-				while (d < 8) // moves forward
+				
+				while (d < 8) // moves forward\
+					// g, h  next move 위치로 정의 
+					
+					
+				
 				{
 
 					if ((g == ix) && (h == iy)) { // reached exit
@@ -176,11 +167,12 @@ class StackList{
 					if ((maze[g][h] == 0) && (mark[g][h] == 0)) { // new position
 
 
-					} else
+					} else {
 
 				}
 			}
 			System.out.println("no path in maze ");
+		}
 		}
 		static void showMatrix(int[][]d, int row, int col) {
 			for (int i = 0; i <= row; i++) {
@@ -221,12 +213,25 @@ class StackList{
 			//Directions d;
 			//d = Directions.N;
 			//d = d + 1;//java는 지원안됨
+			System.out.println("main print");
+			System.out.println(maze.length);
+			
 			for (int i = 0; i < 14; i++) {
 				for (int j = 0; j < 17; j++) {
-
-					// input[][]을 maze[][]로 변환
+					if( i == 0 || j == 0 || i==maze.length-1 || j==maze[0].length-1) {
+						maze[i][j] =1;
+					}else {
+						maze[i][j] = input[i-1][j-1];
+					}
+					}
 				}
-			}
+			
+//			for (int i = 0; i < 12; i++) {
+//				for (int j = 0; j < 15; j++) {
+//
+//						maze[i+1][j+1] =input[i][j];
+//				}
+//			}
 			System.out.println("maze[12,15]::");
 			showMatrix(maze, 13, 16);
 		
@@ -237,5 +242,5 @@ class StackList{
 			System.out.println("mark::");
 			showMatrix(mark, 12, 15);
 		}
+
 	}
-	

@@ -1,0 +1,60 @@
+package Chap6_Sorting;
+
+import java.util.Random;
+
+//셸 정렬(버전 1) 6-5
+//https://travelbeeee.tistory.com/215
+
+import java.util.Scanner;
+
+class 실습6_6ShellSort {
+ //--- 셸 정렬 ---//
+ static void shellSort(int[] a, int n) {
+	 int count = 0;
+     for (int h = n / 2; h > 0; h /= 2)//n = 8 등 짝수일 때 4,2 등으로 효과가 적다
+    	 
+    	 // h를 사용하여 대락 정렬: h =4 , 2 , 1 4에 대해서 2에 대해서 1에 대해서 정렬을 반복
+    	 							// 4요소 떨어져있는거 정렬하고 2요소 떨어져있는거 정렬하고 1요소 떨어져 있는거 정렬한다.
+         for (int i = h; i < n; i++) {// i는 4,5,6 등에 대하여
+        	 
+        	 //insertion sort 부분이고 위쪽이 ShellSort 핵심 부분 , 이해하기 !! 
+             int j;
+             int tmp = a[i];
+             for (j = i - h; j >= 0 && a[j] > tmp; j -= h) { // j가 = 0,2,4,6 등으로 반복 각 인덱스에 대해서 반복해서 정렬을 실행 
+            	 count++;
+                 a[j + h] = a[j];
+             }
+             a[j + h] = tmp;
+
+         }
+     System.out.println("\n비교횟수 = " + count);
+ }
+ static void showData(int[] d) {
+     for (int i = 0; i < d.length; i++)
+         System.out.print(d[i] + " ");
+ }
+ public static void main(String[] args) {
+     Scanner stdIn = new Scanner(System.in);
+
+     System.out.println("셸 정렬(버전 1)");
+     System.out.print("요솟수: ");
+     int nx = stdIn.nextInt();
+   
+     int[] x = new int[nx];
+     
+     Random rand = new Random();
+
+     for (int i = 0; i < nx; i++) {
+    	x[i] = rand.nextInt(999);
+     }
+     System.out.println("정렬전:");
+     showData(x);
+
+     shellSort(x, nx);            // 배열 x를 셸정렬
+     System.out.println("정렬후:");
+     showData(x);
+  
+
+ 
+ }
+}
