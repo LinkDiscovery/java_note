@@ -20,6 +20,7 @@ class Items3 {
 
 class Offsets3 {
 	int a;
+	
 	int b;
 	public Offsets3(int a, int b) {
 		this.a = a; 

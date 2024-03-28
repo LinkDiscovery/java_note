@@ -6,15 +6,27 @@ package Chap6_Sorting.과제;
 // f(x) * g(x) = (5x제곱 + 4x + 7)*(3x제곱 + 6x제곱) 
 
 class Polynomial implements Comparable<Polynomial>{
-    double coef;           // 계수
+	double coef;           // 계수
     int    exp;            // 지수, 지수를 이용해서 정렬하고 , 지수가 같으면 계수를 활용한다.
-
-
+	
+	public Polynomial(double d, int i) {
+    	d = coef;
+    	i = exp;
+	}
+	
+	@Override
+	public int compareTo(Polynomial o) {
+		
+		return 0;
+	}
+	
 }
 public class Test_다항식merge연산 {
 
 	static void merge(Polynomial[] a, int lefta, int righta, int leftb, int rightb ) {
-
+		
+		
+		
 	}
 
 	// --- 퀵 정렬(비재귀 버전)---//
@@ -63,5 +75,15 @@ public class Test_다항식merge연산 {
 		ShowPolynomial(y);
 		int result = EvaluatePolynomial(z, 10);//다항식 값 계산 함수 z(10) 값 계산한다 
 		System.out.println(" result = " + result );
+	}
+
+	private static void AddPolynomial(Polynomial[] x, Polynomial[] y, Polynomial[] z) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void ShowPolynomial(Polynomial[] x) {
+		// TODO Auto-generated method stub
+		
 	}
 }
