@@ -1,11 +1,9 @@
-package Test;
-
-
-
+package Chap8_List;
 //단순한 linked list에서 insert, delete하는 알고리즘을 코딩: 1단계
 
 import java.util.Random;
 import java.util.Scanner;
+
 
 class Node1 {
 	int data;
@@ -24,16 +22,33 @@ class LinkedList1 {
 		first = null;
 	}
 
-	public int Delete(int element) { // delete the element{
+	public int Delete(int element) // delete the element
+	{
+//		Node1 p = first, q=null;
+		// 앞에껄 알아야 하는데 q를 하나 만들어서 해결을 한다.
 		
+		Node1 current = first;
+		Node1 q;
+		q = current;
+
+		return -1;// 삭제할 대상이 없다.
 	}
 
 	public void Show() { // 전체 리스트를 순서대로 출력한다.
-
+		Node1 p = first;
+		System.out.println("***리스트 출력***");
+		
+		while(p != null) {
+			System.out.println(p.data);
+			p = p.link;
+		}
+		
 	}
 
-	public void Add(int element) { // 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
+	public void Add(int element) // 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
+	{	
 		Node1 temp = new Node1(element);
+		
 		if(first == null) {
 			first = temp;
 			return;
@@ -44,7 +59,9 @@ class LinkedList1 {
 				if(element > p.data) {
 					q=p;//q가 p를 따라 다닌다. // p는 앞에서부터 쭉 탐색하며 간다.
 						// q라는 변수를 만들어서 p를 따라다니게 만들어야한다.
+					
 					p=p.link;
+				
 				}	else { 
 					//insert 해야한다.
 					temp.link = p;
@@ -62,31 +79,34 @@ class LinkedList1 {
 //			}
 			
 		}
-
 	}
-
 	public boolean Search(int data) { // 전체 리스트를 순서대로 출력한다.
-		return true;
+		Node1 ptr = first;
+
+		return false;
 	}
 }
 
-public class 실습9_1정수연결리스트_test {
-	enum Menu { // enum을 실무에서는 많이 사용한다.
-				// 반드시 숙지할 것 
+public class 실습9_1정수연결리스트_test{
+	enum Menu { //enum 숫자화 한다. menu를 클래스로 간주한다.
 		Add("삽입"), Delete("삭제"), Show("인쇄"), Search("검색"), Exit("종료");
-
+		//symbol
 		private final String message; // 표시할 문자열
 
-		static Menu MenuAt(int idx) { // 순서가 idx번째인 열거를 반환
-			for (Menu m : Menu.values())// Menu는 enum values() 는 자바에서 제공되는 메소드로 
-				
-				if (m.ordinal() == idx) // ordinal은 인덱스 값을 return 해 줌
+		static Menu MenuAt(int idx) { // 순서가 idx번째인 열거를 반환, Menu라는 클래스의 메서드MenuAt라 생각
+			for (Menu m : Menu.values())
+							// values 는 자바 라이브러리에서 제공, static 처럼 호출,
+				            //symbol 객체들 { Add,Delete,show,Search,Exit}
+				if (m.ordinal() == idx)
 					return m;
 			return null;
 		}
-
-		Menu(String string) { // 생성자(constructor)
-			message = string; // 이게 어려운데 어디서 호출되는지 가 중요한데 이건 내일 
+		//"Add" 상수가 정의될 때 Menu("삽입") 생성자가 호출되어 message 필드가 "삽입"으로 초기화
+		//생성자는 각 상수가 정의될 때 호출되며, 해당 상수의 message 필드를 초기화하는 역할
+		//enum 상수가 언제 정의되는가를 찾아 보아야 한다 
+		Menu(String string) { // 생성자(constructor)가 언제 호출되는지 파악하는 것이 필요하다 **
+			message = string;
+			System.out.println("\nMenu 생성자 호출:: " + string);
 		}
 
 		String getMessage() { // 표시할 문자열을 반환
@@ -94,12 +114,14 @@ public class 실습9_1정수연결리스트_test {
 		}
 	}
 
-	// --- 메뉴 선택 ---// Menu 클래스와 별개 
+	// --- 메뉴 선택 ---//
 	static Menu SelectMenu() {
 		Scanner sc = new Scanner(System.in);
 		int key;
 		do {
-			for (Menu m : Menu.values()) {
+			for (Menu m : Menu.values()) {//Menu 생성자 호출됨 , 객체가 만들어져서 생산자 호출됨 .. 
+											// 실행해서 어떻게 생성자 호출이 다른 메세지로 5개 출력되는지 해석하기
+											// println 하면 무조건 스트링이 와야한다	
 				System.out.printf("(%d) %s  ", m.ordinal(), m.getMessage());
 				if ((m.ordinal() % 3) == 2 && m.ordinal() != Menu.Exit.ordinal())
 					System.out.println();
@@ -111,39 +133,38 @@ public class 실습9_1정수연결리스트_test {
 	}
 
 	public static void main(String[] args) {
-		Menu menu; // 메뉴
+		Menu menu; // 메뉴 참조 변수일 뿐이다 
 		Random rand = new Random();
-		System.out.println("Linked List");
 		LinkedList1 l = new LinkedList1();
 		Scanner sc = new Scanner(System.in);
 		int data = 0;
-		System.out.println("inserted");
 		l.Show();
 		do {
-			switch (menu = SelectMenu()) {
-			case Add: // 머리노드 삽입
+			switch (menu = SelectMenu()) {//Menu 생성자 호출 - menu 객체를 리턴한다 
+			case Add: //컴퓨터 내부적으로는 Add는 0을 의미 
 				data = rand.nextInt(20);
-				//double d = Math.random();
-				//data = (int) (d * 50);
 				l.Add(data);
+				System.out.print("삽입후 리스트: ");
+				l.Show();
 				break;
-			case Delete: // 머리 노드 삭제
+				
+			case Delete: 
 				data = sc.nextInt();
 				int num = l.Delete(data);
 				System.out.println("삭제된 데이터는 " + num);
 				break;
-			case Show: // 꼬리 노드 삭제
+			case Show: 
 				l.Show();
 				break;
 			case Search: // 회원 번호 검색
 				int n = sc.nextInt();
 				boolean result = l.Search(n);
 				if (!result)
-					System.out.println("검색 값 = " + n + "데이터가 없습니다.");
+					System.out.println("검색 값 = " + n + " 데이터가 없습니다.");
 				else
-					System.out.println("검색 값 = " + n + "데이터가 존재합니다.");
+					System.out.println("검색 값 = " + n + " 데이터가 존재합니다.");
 				break;
-			case Exit: // 꼬리 노드 삭제
+			case Exit: 
 				break;
 			}
 		} while (menu != Menu.Exit);
