@@ -1,4 +1,4 @@
-package Chap8_List;
+package Test;
 //단순한 linked list에서 insert, delete하는 알고리즘을 코딩: 1단계
 
 import java.util.Random;
@@ -87,7 +87,7 @@ class LinkedList1 {
 	}
 }
 
-public class 실습9_1정수연결리스트_test{
+public class 실습9_1정수연결리스트_test2{
 	enum Menu { //enum 숫자화 한다. menu를 클래스로 간주한다.
 		Add("삽입"), Delete("삭제"), Show("인쇄"), Search("검색"), Exit("종료");
 		//symbol

@@ -67,7 +67,7 @@ class Node3 {
 	SimpleObject3 data;
 	Node3 link;
 
-	public Node3(SimpleObject3 element) {
+	public Node3(int element) {
 		data = element;
 		link = null;
 	}

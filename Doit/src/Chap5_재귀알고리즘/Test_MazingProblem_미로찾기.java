@@ -1,4 +1,4 @@
-package Test;
+package Chap5_재귀알고리즘;
 //백트래킹문제풀이 
 
 
@@ -12,6 +12,7 @@ enum Directions2 {
 class Items3 {
 	int x;
 	int y;
+	
 	int dir;
 
 	public Items3(int x, int y, int d) {
