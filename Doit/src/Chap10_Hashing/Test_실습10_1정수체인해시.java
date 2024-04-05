@@ -47,10 +47,10 @@ class SimpleChainHash {
 	 
 	 while (p!= null) {
 		 if(p.getKey() == key)
-			return 1;
+			return -1;
 		 p=p.next;
 	 }
-	return -1;
+	return 1;
 	 
  }
 
@@ -62,7 +62,7 @@ class SimpleChainHash {
 	 while(p!=null) {
 		 if(p.getKey()==key)
 			 return 0;
-		 p = p.next;
+		 p = p.next; // p.next 는 현재 null 값임 		
 	 }
 	 Node temp = new Node(key);
 	 temp.next = table[hash];
@@ -74,7 +74,25 @@ class SimpleChainHash {
 
  //--- 키값이 key인 요소를 삭제 ---//
  public int delete(int key) {
-
+	 int hash = hashValue(key);
+	 Node p = table[hash];
+	 Node q = null;
+	 
+	 while(p !=null) {
+		 // key 값을 삭제 해야한다. 
+		 if(p.getKey()==key) {
+			 if(q==null)
+				 table[hash] = p.next;
+			 else
+				 q.next = p.next;
+			 return 0;
+			 
+		 }
+		 q=p;
+		 p = p.next;
+	 }
+	 return 1; 
+	 
  }
 
  //--- 해시 테이블을 덤프(dump) ---//

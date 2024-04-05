@@ -443,6 +443,7 @@ public class 정수이진트리 {
 				break;
 			case PreorderPrint://prefix 출력
 				t.preorder();
+				
 				System.out.println();
 				break;
 			case PostorderPrint://postfix로 출력
